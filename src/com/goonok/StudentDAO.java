@@ -25,6 +25,7 @@ public class StudentDAO {
 	}
 
 	public void setDriver(String driver) {
+		System.out.println("setting driver");
 		this.driver = driver;
 	}
 
@@ -33,14 +34,17 @@ public class StudentDAO {
 	}
 
 	public void setUrl(String url) {
+		System.out.println("setting url");
 		this.url = url;
 	}
 
 	public String getUserName() {
+		
 		return userName;
 	}
 
 	public void setUserName(String userName) {
+		System.out.println("setting user");
 		this.userName = userName;
 	}
 
@@ -49,11 +53,14 @@ public class StudentDAO {
 	}
 
 	public void setPassword(String password) {
+		System.out.println("setting password");
 		this.password = password;
 	}
 	
 	
 	public void createStudentDBConnection() throws ClassNotFoundException, SQLException {
+		
+		System.out.println("Init DB Connection");
 		//Load Driver
 		Class.forName(driver);
 		
@@ -63,11 +70,12 @@ public class StudentDAO {
 	
 	
 	public void selectAllRows() throws ClassNotFoundException, SQLException {
-		System.out.println("Retriving all student data");
 		
 		createStudentDBConnection(); //- used instead @PostConstruct before the method name
 		//execute query
 		Statement statement = connection.createStatement();
+		System.out.println("created connection");
+		System.out.println("Retriving all student data");
 		ResultSet resultSet = statement.executeQuery("SELECT * FROM school.student");
 		
 		while(resultSet.next()) {
@@ -83,6 +91,7 @@ public class StudentDAO {
 	
 		createStudentDBConnection(); //- used instead @PostConstruct before the method name
 		//execute Query
+		System.out.println("Created connection");
 		Statement statement = connection.createStatement();
 		statement.executeUpdate("DELETE FROM school.student WHERE ROOL_NO = " +ROOL_NO);
 		System.out.println("Record Deleted with the ROOL_NO:" + ROOL_NO + " is successful");
@@ -92,6 +101,7 @@ public class StudentDAO {
 	}
 	
 	public void closeConnection() throws SQLException {
+		System.out.println("closed connection");
 		connection.close();
 	}
 }

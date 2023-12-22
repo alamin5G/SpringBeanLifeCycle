@@ -2,7 +2,6 @@ package com.goonok;
 
 import java.sql.SQLException;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Test {
@@ -11,8 +10,7 @@ public class Test {
 		
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 		StudentDAO studentDAO = context.getBean("studentDAO", StudentDAO.class);
-		studentDAO.selectAllRows();
-		studentDAO.deleteStudentRecord(3);
+		studentDAO.deleteStudentRecord(5);
 		context.close();
 	}
 	
