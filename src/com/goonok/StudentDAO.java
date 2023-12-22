@@ -6,25 +6,66 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.springframework.web.bind.annotation.*;
+
 public class StudentDAO {
 	/*
 	 * To write JDBC connection code
 	 */
 	
-	private String driver = "com.mysql.jdbc.Driver";
-	private String url = "jdbc:mysql://localhost:3306/school";
-	private String userName = "root";
-	private String password = "252646";
+	private String driver;
+	private String url;
+	private String userName;
+	private String password;
 	
-	public void selectAllRows() throws ClassNotFoundException, SQLException {
-		System.out.println("Retriving all student data");
-		
+	Connection connection;
+	
+	public String getDriver() {
+		return driver;
+	}
+
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+	public void createStudentDBConnection() throws ClassNotFoundException, SQLException {
 		//Load Driver
 		Class.forName(driver);
 		
 		//get a connection
-		Connection connection = DriverManager.getConnection(url, userName, password);
+		connection = DriverManager.getConnection(url, userName, password);
+	}
+	
+	
+	public void selectAllRows() throws ClassNotFoundException, SQLException {
+		System.out.println("Retriving all student data");
 		
+		createStudentDBConnection(); //- used instead @PostConstruct before the method name
 		//execute query
 		Statement statement = connection.createStatement();
 		ResultSet resultSet = statement.executeQuery("SELECT * FROM school.student");
@@ -35,20 +76,22 @@ public class StudentDAO {
 			String STUDENT_ADDRESS = resultSet.getString(3);
 			System.out.println(ROOL_NO + "\t" + STUDENT_NAME + "\t" + STUDENT_ADDRESS);
 		}
+		closeConnection(); //same as connection.close();
 	}
 	
 	public void deleteStudentRecord(int ROOL_NO) throws ClassNotFoundException, SQLException {
-		//Load Driver
-		Class.forName(driver);
-		
-		//get a connection
-		Connection connection = DriverManager.getConnection(url, userName, password);
-		
+	
+		createStudentDBConnection(); //- used instead @PostConstruct before the method name
 		//execute Query
 		Statement statement = connection.createStatement();
 		statement.executeUpdate("DELETE FROM school.student WHERE ROOL_NO = " +ROOL_NO);
 		System.out.println("Record Deleted with the ROOL_NO:" + ROOL_NO + " is successful");
-		connection.close();
+	
+		closeConnection();
 		
+	}
+	
+	public void closeConnection() throws SQLException {
+		connection.close();
 	}
 }
